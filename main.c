@@ -1,13 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <sys/time.h>
 #include <string.h>
 
 #define QUIZ_TIME 30
 volatile short time_remaining;
-int should_stop;
 pthread_t timer_thread, quiz_thread;
 
 void print_time(void) {
@@ -33,7 +30,6 @@ void *timer(void *vargp) {
         time_remaining = time_remaining - 10;
         print_time();
     }
-    should_stop = 1;
     pthread_cancel(quiz_thread);
     pthread_exit(NULL);
 }
@@ -43,7 +39,6 @@ int main(int argc, char** argv) {
     while(wantQuiz == 1)
     {
         time_remaining = QUIZ_TIME;
-        should_stop = 0;
         pthread_create(&timer_thread, NULL, timer, NULL);
         pthread_create(&quiz_thread, NULL, start_quiz, NULL);
         pthread_join(quiz_thread, NULL);
