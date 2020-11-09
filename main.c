@@ -5,7 +5,7 @@
 #include <sys/time.h>
 #include <string.h>
 
-#define QUIZ_TIME 10
+#define QUIZ_TIME 30
 volatile short time_remaining;
 int should_stop;
 pthread_t timer_thread, quiz_thread;
